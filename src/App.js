@@ -1,40 +1,41 @@
-import React, { useEffect , useState } from 'react';
-import './App.css';
+import {useEffect , useState } from 'react';
 import Images from './Images';
 import Header from './Header/Header'
 import Footer from './Footer/Footer';
+import './App.css';
+
+const DEFAULT_PAGE = 6;
+const API_URL = 'https://fakestoreapi.com';
 
 function App() {
-const [change, setChange] = useState(1);
-const [post, setPosts] = useState([]);
-const page = 6;
-  useEffect(() => {
-    fetch('https://fakestoreapi.com/products')
-    .then(res => res.json())
-    .then((json) => {
-      setPosts(json) 
-    })
-  },[])
+const [currentPage, setCurrentPage] = useState(1);
+const [error, setError] = useState('');
+const [posts, setPosts] = useState([]);
 
-  let count = Math.ceil(post.length / 6)
-  let arr = [];
+  useEffect(() => {
+    fetch(`${API_URL}/products`)
+      .then(res => res.json())
+      .then((json) => {
+        setPosts(json) 
+      })
+      .catch(error => setError(error.message))
+  }, [])
+
+  const count = Math.ceil(post.length / 6)
+  const pages = [];
   for(let i = 1; i <= count; i++){
-     arr.push(i);
+     pages.push(i);
   }
    return (
     <div> 
       <Header/>
       <div className="App">
-          {post.map((item, i) => 
-           {
-              return i < change * page && i >= (change - 1) * page ? <Images item={item} key={i} index={i}/> : <React.Fragment key={i}></React.Fragment>
-           }
-          )}
+          {posts.map((post, i) => i < currentPage * DEFAULT_PAGE && i >= (currentPage - 1) * DEFAULT_PAGE ? <Images post={post} key={i} /> : null)}
       </div>
       <div className="div_btn">
-         {arr.map((el, i) => 
+         {pages.map((page, i) => 
           <div key={i}>
-              <button onClick={() => setChange(el)}>{el}</button>
+              <button onClick={() => setCurrentPage(page)}>{page}</button>
           </div>
         )}
       </div>
