@@ -1,0 +1,24 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial;
+}
+footer{
+    width: 100%;
+    background-color: #222;
+}
+.conteiner{
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+
+}
+.conteiner>div{
+    width: 300px;
+    height: 300px;
+    background-color: #fff;
+}
